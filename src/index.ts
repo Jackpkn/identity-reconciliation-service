@@ -1,10 +1,11 @@
-import { createServer } from "http";
-const server = createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hi there!");
+import express, { Request, Response } from "express";
+import { env } from "./config/env";
+const app = express();
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello, World!");
 });
 
-server.listen(3000, () => {
-  console.log(`server is listen on port number http://localhost:${3000}`);
+app.listen(env.PORT, () => {
+  console.log(`server is listen on port number http://localhost:${env.PORT}`);
 });
 console.log("Hello, world!");
