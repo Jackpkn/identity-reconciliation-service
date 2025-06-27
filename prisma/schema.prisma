@@ -1,0 +1,38 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Contact {
+    id             Int            @id @default(autoincrement())
+    phoneNumber    String?        @db.VarChar(20)
+    email          String?        @db.VarChar(255)
+    linkedId       Int?
+    linkPrecedence LinkPrecedence
+    createdAt      DateTime       @default(now()) @db.Timestamptz(3)
+    updatedAt      DateTime       @updatedAt @db.Timestamptz(3)
+    deletedAt      DateTime?      @db.Timestamptz(3)
+
+    // Self-referential relationship
+    linkedContact  Contact?  @relation("ContactLink", fields: [linkedId], references: [id])
+    linkedContacts Contact[] @relation("ContactLink")
+
+    // Indexes for performance
+    @@index([email])
+    @@index([phoneNumber])
+    @@index([linkedId])
+    @@index([linkPrecedence])
+    @@index([createdAt])
+    @@map("contacts")
+}
+
+enum LinkPrecedence {
+    PRIMARY
+    SECONDARY
+
+    @@map("link_precedence")
+}

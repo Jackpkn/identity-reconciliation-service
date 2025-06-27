@@ -2,3 +2,6 @@ node_modules
 # dotenv environment variables file
 .env
 .env.*.local
+
+#logs
+logs

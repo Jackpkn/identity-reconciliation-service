@@ -3,7 +3,6 @@
     "outDir": "./dist",
     "lib": ["es2020"],
     "target": "es6",
-    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node"],
@@ -15,7 +14,19 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@/controller/*": ["controller/*"],
+      "@/services/*": ["services/*"],
+      "@/repositories/*": ["repositories/*"],
+      "@/models/*": ["models/*"],
+      "@/middleware/*": ["middleware/*"],
+      "@/types/*": ["types/*"],
+      "@/config/*": ["config/*"],
+      "@/validators/*": ["validators/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
