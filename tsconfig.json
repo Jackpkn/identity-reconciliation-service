@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["*"],
       "@/controller/*": ["controller/*"],
-      "@/services/*": ["servcies/*"],
+      "@/services/*": ["services/*"],
       "@/repositories/*": ["repositories/*"],
       "@/models/*": ["models/*"],
       "@/middleware/*": ["middleware/*"],
