@@ -1,4 +1,4 @@
-import { env } from "@/config/env";
+import { env } from "../config/env";
 import winston from "winston";
 
 const logFormat = winston.format.combine(
@@ -9,7 +9,7 @@ const logFormat = winston.format.combine(
 );
 
 export const logger = winston.createLogger({
-  level: env.logging.level,
+  level: env.LOG_LEVEL,
   format: logFormat,
   defaultMeta: { service: "indentity-reconcillation-service" },
   transports: [
