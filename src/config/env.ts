@@ -9,6 +9,8 @@ const envSchema = z.object({
   LOG_FORMAT: z.string().default("combined"),
   REDIS_URL: z.string().url().default("redis://localhost:6379"),
   REDIS_TTL: z.coerce.number().default(3600), // in seconds
+  RATE_LIMIT_WINDOW_MS: z.coerce.number().default(900000), // 15 minutes
+  RATE_LIMIT_MAX: z.coerce.number().default(100),
 });
 
 export const env = envSchema.parse(process.env);
