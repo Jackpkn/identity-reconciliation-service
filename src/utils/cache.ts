@@ -73,3 +73,48 @@ class RedisCache implements CacheInterface {
     }
   }
 }
+
+class MemoryCache implements CacheInterface {
+  private cache: NodeCache;
+  constructor() {
+    this.cache = new NodeCache({
+      stdTTL: env.REDIS_TTL,
+      checkperiod: 600, // Check for expired keys every 10 minutes
+    });
+  }
+  async get<T>(key: string): Promise<T | null> {
+    const value = this.cache.get<T>(key);
+    return value || null;
+  }
+  async set<T>(key: string, value: T, ttl = env.REDIS_TTL): Promise<void> {
+    await this.cache.set(key, value, ttl);
+  }
+  async del(key: string): Promise<void> {
+    this.cache.del(key);
+  }
+  async clear(): Promise<void> {
+    this.cache.flushAll();
+  }
+  async health(): Promise<{ status: string; latency: number }> {
+    const start = Date.now();
+    try {
+      // Simple operation to test memory cache
+      this.cache.set("health-check", "ok", 1);
+      const value = this.cache.get("health-check");
+      this.cache.del("health-check");
+
+      const latency = Date.now() - start;
+      return { status: value === "ok" ? "connected" : "disconnected", latency };
+    } catch (error) {
+      logger.error("Memory cache health check failed", { error });
+      return { status: "disconnected", latency: 0 };
+    }
+  }
+}
+
+export function createCache(): CacheInterface {
+  if (env.NODE_ENV == "production" && env.REDIS_URL) {
+    return new RedisCache();
+  }
+  return new MemoryCache();
+}
